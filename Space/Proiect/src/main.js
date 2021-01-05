@@ -29,6 +29,7 @@ var earth, moon, satellite, satellite2, satellite3, space
 
 var pMat, mvMat, mMat, vMat, mvMatMoon, mvMatSat1, mvMatSat2, mSpaceMat, vSpaceMat
 var pMatLoc, mvMatLoc
+var mMatMoon, mMatSat
 
 var texture_Loc_Earth, texture_Loc_Moon, texture_Loc_Sat, texture_Loc_Sat2, texture_Loc_Sat3, texture_Loc_Space
 var earth_image, moon_image, satellite_image, satellite_image2, space_image
@@ -134,7 +135,7 @@ function init() {
 }
 
 function display(currentTime) {
-  currentTime *= 0.0005 // în secunde
+  currentTime *= 0.0001 // în secunde
   gl.clearColor(0.0, 0.0, 0.0, 1.0)
   gl.clear(gl.COLOR_BUFFER_BIT)
   gl.clear(gl.DEPTH_BUFFER_BIT)
@@ -246,14 +247,15 @@ function display(currentTime) {
 
   //MOON
   //MOON - model
-  //mat4.rotate(mMat,mMat,currentTime*2,[0,1,0]);
-  mat4.translate(mMat, mMat, moon.location);
+  mMatMoon = mat4.create();
+  mat4.rotate(mMatMoon,mMatMoon,currentTime*0.5,[0,1,0]);
+  mat4.translate(mMatMoon, mMatMoon, moon.location);
   //mat4.translate(mMat, mMat, [-1.0, 0, 0])
-  mat4.translate(mMat, mMat, [1.0, 0, 0])
+  mat4.translate(mMatMoon, mMatMoon, [1.0, 0, 0])
 
   //MOON - model view
   mvMatMoon = mat4.create()
-  mat4.multiply(mvMatMoon, vMat, mMat)
+  mat4.multiply(mvMatMoon, vMat, mMatMoon)
 
   gl.uniformMatrix4fv(pMatLoc, false, pMat)
   gl.uniformMatrix4fv(mvMatLoc, false, mvMatMoon)
@@ -288,14 +290,16 @@ function display(currentTime) {
 
   ///////////////////////////////////////////////////////////////
   //Satelit 2
-  mat4.translate(mMat, mMat, [-1.0, -0.3, 1.0])
-  //mat4.rotate(mMat, mMat, Utils.toRadians(15), [0, -1, 0]);
-  mat4.rotate(mMat, mMat, Utils.toRadians(180), [0, -1, 0]);
-  mat4.scale(mMat, mMat, [0.02, 0.02, 0.02])
+  mMatSat = mat4.create();
+  mat4.translate(mMatSat,mMatSat,earth.location);
+  mat4.rotate(mMatSat, mMatSat, currentTime*5, [0, -1, 0]);
+  mat4.translate(mMatSat, mMatSat, [-1.0, -0.3, 1.0])
+  mat4.rotate(mMatSat, mMatSat, Utils.toRadians(180), [0, -1, 0]);
+  mat4.scale(mMatSat, mMatSat, [0.02, 0.02, 0.02])
 
   // matricea de model-view
   mvMatSat2 = mat4.create()
-  mat4.multiply(mvMatSat2, vMat, mMat)
+  mat4.multiply(mvMatSat2, vMat, mMatSat)
 
   // copiază matricile model-view, projection în variabilele uniforme corespunzătoare
   gl.uniformMatrix4fv(pMatLoc, false, pMat)
@@ -335,14 +339,14 @@ function display(currentTime) {
   ///////////////////////////////////////////////////////////////////////
   //Satelit
 
-  mat4.translate(mMat, mMat, [90.0, 13.0, -25.0])
-  //mat4.rotate(mMat, mMat, Utils.toRadians(15), [0, -1, 0]);
-  mat4.rotate(mMat, mMat, Utils.toRadians(90), [0, -1, 0]);
+  mat4.translate(mMatSat, mMatSat, [15.0, 13.0, -25.0])
+  //mat4.rotate(mMatSat, mMatSat, currentTime, [0, -1, 0]);
+  mat4.rotate(mMatSat, mMatSat, Utils.toRadians(90), [0, 1, 0]);
   //mat4.scale(mMat, mMat, [1,1,1])
 
   // matricea de model-view
   mvMatSat1 = mat4.create()
-  mat4.multiply(mvMatSat1, vMat, mMat)
+  mat4.multiply(mvMatSat1, vMat, mMatSat)
 
   // copiază matricile model-view, projection în variabilele uniforme corespunzătoare
   gl.uniformMatrix4fv(pMatLoc, false, pMat)
