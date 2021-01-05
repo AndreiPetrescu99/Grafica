@@ -29,7 +29,7 @@ var earth, moon, satellite, satellite2, satellite3, space
 
 var pMat, mvMat, mMat, vMat, mvMatMoon, mvMatSat1, mvMatSat2, mSpaceMat, vSpaceMat
 var pMatLoc, mvMatLoc
-var mMatMoon, mMatSat
+var mMatMoon, mMatSat, mMatSat2
 
 var texture_Loc_Earth, texture_Loc_Moon, texture_Loc_Sat, texture_Loc_Sat2, texture_Loc_Sat3, texture_Loc_Space
 var earth_image, moon_image, satellite_image, satellite_image2, space_image
@@ -290,16 +290,16 @@ function display(currentTime) {
 
   ///////////////////////////////////////////////////////////////
   //Satelit 2
-  mMatSat = mat4.create();
-  mat4.translate(mMatSat,mMatSat,earth.location);
-  mat4.rotate(mMatSat, mMatSat, currentTime*5, [0, -1, 0]);
-  mat4.translate(mMatSat, mMatSat, [-1.0, -0.3, 1.0])
-  mat4.rotate(mMatSat, mMatSat, Utils.toRadians(180), [0, -1, 0]);
-  mat4.scale(mMatSat, mMatSat, [0.02, 0.02, 0.02])
+  mMatSat2 = mat4.create();
+  mat4.translate(mMatSat2,mMatSat2,earth.location);
+  mat4.rotate(mMatSat2, mMatSat2, currentTime*5, [0, -1, 0]);
+  mat4.translate(mMatSat2, mMatSat2, [-1.0, -0.3, 1.0])
+  mat4.rotate(mMatSat2, mMatSat2, Utils.toRadians(180), [0, -1, 0]);
+  mat4.scale(mMatSat2, mMatSat2, [0.02, 0.02, 0.02])
 
   // matricea de model-view
   mvMatSat2 = mat4.create()
-  mat4.multiply(mvMatSat2, vMat, mMatSat)
+  mat4.multiply(mvMatSat2, vMat, mMatSat2)
 
   // copiază matricile model-view, projection în variabilele uniforme corespunzătoare
   gl.uniformMatrix4fv(pMatLoc, false, pMat)
@@ -338,11 +338,12 @@ function display(currentTime) {
 
   ///////////////////////////////////////////////////////////////////////
   //Satelit
-
-  mat4.translate(mMatSat, mMatSat, [15.0, 13.0, -25.0])
-  //mat4.rotate(mMatSat, mMatSat, currentTime, [0, -1, 0]);
+  mMatSat = mat4.create();
+  mat4.translate(mMatSat, mMatSat, earth.location);
+  mat4.rotate(mMatSat, mMatSat, currentTime*7.5, [0, -1, 0]);
+  mat4.translate(mMatSat, mMatSat, [-1.2, -0.5, 1.5])
   mat4.rotate(mMatSat, mMatSat, Utils.toRadians(90), [0, 1, 0]);
-  //mat4.scale(mMat, mMat, [1,1,1])
+  mat4.scale(mMatSat, mMatSat, [0.02,0.02,0.02])
 
   // matricea de model-view
   mvMatSat1 = mat4.create()
